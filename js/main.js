@@ -127,7 +127,9 @@
   };
   const motion = window.JRTMotion || { intro: Promise.resolve(), lock: () => {} };
   const fontsReady = document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 900))]) : Promise.resolve();
-  Promise.all([fontsReady, motion.intro]).then(() => requestAnimationFrame(start));
+  let started = false;
+  const startOnce = () => { if (!started) { started = true; start(); } };
+  Promise.all([fontsReady, motion.intro]).then(() => { requestAnimationFrame(startOnce); setTimeout(startOnce, 120); });
 
   // Pause hero loops when the hero is off screen
   const hero = $('.hero');

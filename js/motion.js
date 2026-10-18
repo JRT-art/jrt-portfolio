@@ -75,6 +75,8 @@
     };
     if (seen) loader.classList.add('is-fast');
     requestAnimationFrame(tick);
+    // hard stop: never hold the page if animation frames are throttled (background tabs)
+    setTimeout(() => { count.textContent = 100; arc.style.strokeDashoffset = 0; finish(); }, cap + 700);
   });
 
   /* ------------------------------------------------------------------------
