@@ -765,11 +765,12 @@
   const yr = $('[data-year]'); if (yr) yr.textContent = new Date().getFullYear();
 
   /* ------------------------------------------------------------------------
-     Top message box → Justin's inbox (FormSubmit, no backend needed)
+     Top message box → Justin's inbox via Web3Forms (no backend needed).
+     The access key is public by design; it only lets the form email Justin.
      ------------------------------------------------------------------------ */
+  const WEB3FORMS_KEY = '0ca937ec-1eb1-42aa-b94b-fe623d442e64';
   const msgForm = $('[data-msg]');
   if (msgForm) {
-    const ENDPOINT = 'https://formsubmit.co/ajax/tuazonjustin4321@gmail.com';
     const status = $('.msg__status', msgForm), sendBtn = $('.msg__send', msgForm), sendLabel = $('[data-msg-label]', msgForm);
     const fName = $('#msg-name'), fEmail = $('#msg-email'), fText = $('#msg-text');
     const setStatus = (html, kind) => { status.innerHTML = html; status.className = 'msg__status' + (kind ? ` is-${kind}` : ''); };
@@ -792,16 +793,20 @@
       if ($('.msg__honey', msgForm).value) return; // bot
       sendBtn.disabled = true; sendLabel.textContent = 'Sending…'; setStatus('');
       try {
-        const res = await fetch(ENDPOINT, {
+        if (!WEB3FORMS_KEY) throw new Error('form not configured');
+        const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `Portfolio message from ${fName.value.trim()}`,
+            from_name: 'JRT Portfolio',
             name: fName.value.trim(), email: fEmail.value.trim(), message: fText.value.trim(),
-            _subject: `Portfolio message from ${fName.value.trim()}`, _replyto: fEmail.value.trim(), _template: 'table', _captcha: 'false',
+            botcheck: '',
           }),
         });
         const data = await res.json().catch(() => ({}));
-        if (!res.ok || String(data.success) !== 'true') throw new Error(data.message || 'send failed');
+        if (!res.ok || data.success !== true) throw new Error(data.message || 'send failed');
         msgForm.classList.add('is-sent');
         setStatus(`Message sent. Thanks, ${fName.value.trim().split(' ')[0]} — I'll reply to ${fEmail.value.trim()} soon.`, 'ok');
         msgForm.reset();
