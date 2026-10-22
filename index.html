@@ -14,8 +14,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="preload" as="image" href="assets/poster/uh.jpg">
-  <link rel="stylesheet" href="css/style.css?v=12">
-  <link rel="stylesheet" href="css/motion.css?v=12">
+  <link rel="stylesheet" href="css/style.css?v=14">
+  <link rel="stylesheet" href="css/motion.css?v=14">
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -80,6 +80,26 @@
     <!-- 2. Hero -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__light" aria-hidden="true"></div>
+
+      <!-- Message box: sends straight to Justin's inbox -->
+      <form class="msg" id="message" data-msg novalidate aria-label="Send Justin a message">
+        <p class="msg__label"><span class="msg__dot" aria-hidden="true"></span>Message me directly</p>
+        <div class="msg__fields">
+          <label class="msg__field msg__field--name"><span class="sr">Your name</span>
+            <input id="msg-name" name="name" type="text" autocomplete="name" placeholder="Your name" required maxlength="80">
+          </label>
+          <label class="msg__field msg__field--email"><span class="sr">Your email</span>
+            <input id="msg-email" name="email" type="email" autocomplete="email" placeholder="Your email" required maxlength="120">
+          </label>
+          <label class="msg__field msg__field--text"><span class="sr">Your message</span>
+            <textarea id="msg-text" name="message" rows="1" placeholder="Tell me about your project…" required maxlength="3000"></textarea>
+          </label>
+          <input class="msg__honey" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn btn--primary msg__send" type="submit" data-cursor="cta"><span data-msg-label>Send</span><i class="arrow" aria-hidden="true">↗</i></button>
+        </div>
+        <p class="msg__status" role="status" aria-live="polite"></p>
+      </form>
+
       <div class="hero__meta reveal">
         <span>Justin Rain Tuazon</span>
         <span>AI Video Editor · Direct-Response Ads</span>
@@ -361,7 +381,7 @@
   <div class="toast" role="status" aria-live="polite"></div>
 
   <script src="js/vendor/lenis.min.js" defer></script>
-  <script src="js/motion.js?v=12" defer></script>
-  <script src="js/main.js?v=12" defer></script>
+  <script src="js/motion.js?v=14" defer></script>
+  <script src="js/main.js?v=14" defer></script>
 </body>
 </html>

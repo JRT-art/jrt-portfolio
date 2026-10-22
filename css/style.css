@@ -117,7 +117,7 @@ em { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-s
    -------------------------------------------------------------------------- */
 .cursor { display: none; }
 .has-cursor, .has-cursor a, .has-cursor button, .has-cursor [data-cursor] { cursor: none; }
-.has-cursor input, .has-cursor [data-cursor="native"] { cursor: auto; }
+.has-cursor input, .has-cursor textarea, .has-cursor [data-cursor="native"] { cursor: auto; }
 .has-cursor .cursor { display: block; position: fixed; left: 0; top: 0; z-index: 300; pointer-events: none; }
 .cursor__ring, .cursor__dot { position: absolute; left: 0; top: 0; will-change: transform; }
 .cursor__ring { width: 0; height: 0; display: grid; place-items: center; }
@@ -199,7 +199,7 @@ em { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-s
 .hero__title {
   position: relative; z-index: 2; margin: clamp(24px, 4vh, 56px) 0 0; align-self: center;
   font-weight: 850; font-stretch: 68%; text-transform: uppercase;
-  font-size: clamp(3.4rem, min(10.6vw, 13.6vh), 11.6rem); line-height: .86; letter-spacing: -.025em;
+  font-size: clamp(3.4rem, min(10.6vw, 11.5vh), 11.6rem); line-height: .86; letter-spacing: -.025em;
 }
 .hero__title .line { display: block; overflow: hidden; padding-bottom: .04em; }
 .hero__title .line > span { display: inline-flex; align-items: center; gap: .18em; transform: translate3d(0, 110%, 0); }
@@ -635,4 +635,55 @@ body.is-locked { overflow: hidden; }
 @media (max-width: 860px) {
   .chip--2 { display: none; }
   .hero__title .line > span { white-space: nowrap; }
+}
+
+/* --------------------------------------------------------------------------
+   Top message box — sends to Justin's inbox
+   -------------------------------------------------------------------------- */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.msg {
+  position: relative; z-index: 3; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 10px 20px;
+  margin: 0 0 22px; padding: 8px 8px 8px 20px; border-radius: 22px;
+  background: rgba(19, 34, 56, .72); border: 1px solid var(--line);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  transition: border-color .4s, box-shadow .4s;
+}
+.msg:focus-within { border-color: rgba(111, 168, 220, .7); box-shadow: 0 0 0 4px var(--accent-soft); }
+.msg__label { margin: 0; display: flex; align-items: center; gap: 10px; font: 500 11px/1.2 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--text-2); white-space: nowrap; }
+.msg__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 rgba(111, 168, 220, .6); animation: msgPulse 2.4s ease-out infinite; }
+@keyframes msgPulse { 70%, 100% { box-shadow: 0 0 0 10px rgba(111, 168, 220, 0); } }
+.msg__fields { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.msg__field { display: block; min-width: 0; }
+.msg__field--name { flex: 0 1 170px; }
+.msg__field--email { flex: 0 1 220px; }
+.msg__field--text { flex: 1 1 260px; }
+.msg input, .msg textarea {
+  width: 100%; height: 44px; padding: 11px 16px; border-radius: 14px; border: 1px solid transparent;
+  background: rgba(13, 27, 42, .7); color: var(--text); font: 400 15px/1.4 var(--f-display); resize: none;
+  transition: border-color .3s, background-color .3s;
+}
+.msg textarea { display: block; overflow: hidden; }
+.msg input::placeholder, .msg textarea::placeholder { color: var(--muted); }
+.msg input:focus, .msg textarea:focus { outline: none; border-color: var(--accent); background: var(--bg); }
+.msg input.is-invalid, .msg textarea.is-invalid { border-color: #E8A0A0; }
+.msg__honey { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.msg__send { --h: 44px; flex: none; padding: 0 22px; }
+.msg__send[disabled] { opacity: .6; pointer-events: none; }
+.msg__status { grid-column: 1 / -1; margin: 0; font: 500 12px/1.5 var(--f-mono); letter-spacing: .04em; color: var(--text-2); }
+.msg__status:empty { display: none; }
+.msg__status.is-ok { color: var(--accent-2); }
+.msg__status.is-err { color: #E8A0A0; }
+.msg__status a { text-decoration: underline; text-underline-offset: 3px; }
+.msg.is-sent .msg__fields { display: none; }
+
+@media (max-width: 1180px) {
+  .msg { grid-template-columns: 1fr; padding: 14px; }
+}
+@media (max-width: 860px) {
+  .msg { margin-bottom: 18px; border-radius: 18px; }
+  .msg__fields { flex-wrap: wrap; }
+  .msg__field--name, .msg__field--email { flex: 1 1 140px; }
+  .msg__field--text { flex: 1 1 100%; }
+  .msg textarea { height: auto; min-height: 88px; overflow: auto; }
+  .msg__send { width: 100%; justify-content: space-between; }
 }

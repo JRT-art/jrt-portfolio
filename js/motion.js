@@ -108,7 +108,7 @@
      Letter-level text: buttons roll, footer mark rises
      ------------------------------------------------------------------------ */
   $$('.btn > span:first-child').forEach(s => {
-    if (s.hasAttribute('data-copy-label')) return;
+    if (s.hasAttribute('data-copy-label') || s.hasAttribute('data-msg-label')) return;
     const t = s.textContent;
     s.classList.add('roll');
     s.innerHTML = `<span>${t}</span><span aria-hidden="true">${t}</span>`;
@@ -204,7 +204,7 @@
       sx = x; sy = y;
       if (!spotRaf) spotRaf = requestAnimationFrame(() => { spotRaf = 0; heroEl.style.setProperty('--sx', `${sx}px`); heroEl.style.setProperty('--sy', `${sy}px`); });
       // skip the trail over buttons / video chips so they stay readable
-      if (e.target.closest('a, button, .chip')) { lx = x; ly = y; return; }
+      if (e.target.closest('a, button, .chip, form')) { lx = x; ly = y; return; }
       if (lx == null) { lx = x; ly = y; return; }
       if (Math.hypot(x - lx, y - ly) < 120) return;
       const ang = Math.atan2(y - ly, x - lx);

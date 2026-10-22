@@ -763,4 +763,53 @@
   }));
 
   const yr = $('[data-year]'); if (yr) yr.textContent = new Date().getFullYear();
+
+  /* ------------------------------------------------------------------------
+     Top message box → Justin's inbox (FormSubmit, no backend needed)
+     ------------------------------------------------------------------------ */
+  const msgForm = $('[data-msg]');
+  if (msgForm) {
+    const ENDPOINT = 'https://formsubmit.co/ajax/tuazonjustin4321@gmail.com';
+    const status = $('.msg__status', msgForm), sendBtn = $('.msg__send', msgForm), sendLabel = $('[data-msg-label]', msgForm);
+    const fName = $('#msg-name'), fEmail = $('#msg-email'), fText = $('#msg-text');
+    const setStatus = (html, kind) => { status.innerHTML = html; status.className = 'msg__status' + (kind ? ` is-${kind}` : ''); };
+    const fit = () => { if (window.innerWidth > 860) { fText.style.height = '44px'; fText.style.height = Math.min(fText.scrollHeight + 2, 140) + 'px'; } };
+    fText.addEventListener('input', fit);
+    // Enter sends from the one-line box on desktop; Shift+Enter adds a line
+    fText.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && window.innerWidth > 860) { e.preventDefault(); msgForm.requestSubmit(); } });
+    [fName, fEmail, fText].forEach(f => f.addEventListener('input', () => f.classList.remove('is-invalid')));
+
+    msgForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const bad = [fName, fEmail, fText].filter(f => !f.value.trim() || !f.checkValidity());
+      bad.forEach(f => f.classList.add('is-invalid'));
+      if (bad.length) {
+        const empty = bad.some(f => !f.value.trim());
+        setStatus(empty ? 'Please add your name, email and a message.' : 'Please check your email address.', 'err');
+        bad[0].focus();
+        return;
+      }
+      if ($('.msg__honey', msgForm).value) return; // bot
+      sendBtn.disabled = true; sendLabel.textContent = 'Sending…'; setStatus('');
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            name: fName.value.trim(), email: fEmail.value.trim(), message: fText.value.trim(),
+            _subject: `Portfolio message from ${fName.value.trim()}`, _replyto: fEmail.value.trim(), _template: 'table', _captcha: 'false',
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || String(data.success) !== 'true') throw new Error(data.message || 'send failed');
+        msgForm.classList.add('is-sent');
+        setStatus(`Message sent. Thanks, ${fName.value.trim().split(' ')[0]} — I'll reply to ${fEmail.value.trim()} soon.`, 'ok');
+        msgForm.reset();
+      } catch (_) {
+        setStatus('Your message couldn’t be sent right now. Please email me at <a href="mailto:tuazonjustin4321@gmail.com">tuazonjustin4321@gmail.com</a>.', 'err');
+      } finally {
+        sendBtn.disabled = false; sendLabel.textContent = 'Send';
+      }
+    });
+  }
 })();
