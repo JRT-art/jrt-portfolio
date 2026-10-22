@@ -774,10 +774,6 @@
     const status = $('.msg__status', msgForm), sendBtn = $('.msg__send', msgForm), sendLabel = $('[data-msg-label]', msgForm);
     const fName = $('#msg-name'), fEmail = $('#msg-email'), fText = $('#msg-text');
     const setStatus = (html, kind) => { status.innerHTML = html; status.className = 'msg__status' + (kind ? ` is-${kind}` : ''); };
-    const fit = () => { if (window.innerWidth > 860) { fText.style.height = '44px'; fText.style.height = Math.min(fText.scrollHeight + 2, 140) + 'px'; } };
-    fText.addEventListener('input', fit);
-    // Enter sends from the one-line box on desktop; Shift+Enter adds a line
-    fText.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && window.innerWidth > 860) { e.preventDefault(); msgForm.requestSubmit(); } });
     [fName, fEmail, fText].forEach(f => f.addEventListener('input', () => f.classList.remove('is-invalid')));
 
     msgForm.addEventListener('submit', async e => {

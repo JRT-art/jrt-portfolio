@@ -199,7 +199,7 @@ em { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-s
 .hero__title {
   position: relative; z-index: 2; margin: clamp(24px, 4vh, 56px) 0 0; align-self: center;
   font-weight: 850; font-stretch: 68%; text-transform: uppercase;
-  font-size: clamp(3.4rem, min(10.6vw, 11.5vh), 11.6rem); line-height: .86; letter-spacing: -.025em;
+  font-size: clamp(3.4rem, min(10.6vw, 13.6vh), 11.6rem); line-height: .86; letter-spacing: -.025em;
 }
 .hero__title .line { display: block; overflow: hidden; padding-bottom: .04em; }
 .hero__title .line > span { display: inline-flex; align-items: center; gap: .18em; transform: translate3d(0, 110%, 0); }
@@ -686,4 +686,22 @@ body.is-locked { overflow: hidden; }
   .msg__field--text { flex: 1 1 100%; }
   .msg textarea { height: auto; min-height: 88px; overflow: auto; }
   .msg__send { width: 100%; justify-content: space-between; }
+}
+
+/* Message box as a card beside the Featured Cuts heading */
+.reel__head { align-items: flex-end; }
+.reel__head > div { min-width: 0; }
+.msg--card {
+  flex: 0 1 460px; width: min(460px, 100%); margin: 0; padding: 24px;
+  grid-template-columns: 1fr; gap: 14px; border-radius: 22px;
+  background: linear-gradient(160deg, rgba(27, 38, 59, .9), rgba(19, 34, 56, .75));
+}
+.msg__intro { margin: -4px 0 2px; color: var(--text-2); font-size: .98rem; line-height: 1.5; }
+.msg--card .msg__fields { flex-wrap: wrap; gap: 10px; }
+.msg--card .msg__field--name, .msg--card .msg__field--email { flex: 1 1 160px; }
+.msg--card .msg__field--text { flex: 1 1 100%; }
+.msg--card textarea { height: auto; min-height: 112px; overflow: auto; resize: vertical; }
+.msg--card .msg__send { width: 100%; justify-content: space-between; --h: 48px; }
+@media (max-width: 860px) {
+  .msg--card { flex-basis: 100%; width: 100%; padding: 18px; }
 }
