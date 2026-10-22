@@ -705,3 +705,21 @@ body.is-locked { overflow: hidden; }
 @media (max-width: 860px) {
   .msg--card { flex-basis: 100%; width: 100%; padding: 18px; }
 }
+
+/* Larger message card — fills the space beside the heading */
+.reel__head { align-items: center; gap: 32px clamp(32px, 5vw, 80px); }
+.reel__head > div { flex: 0 0 auto; }
+.msg--card {
+  flex: 1 1 420px; width: auto; max-width: 820px; min-width: min(100%, 380px);
+  padding: clamp(26px, 3vw, 44px); gap: 18px; border-radius: 28px;
+}
+.msg--card .msg__label { font-size: 12px; }
+.msg--card .msg__intro { font-size: clamp(1.1rem, 1.5vw, 1.4rem); color: var(--text); }
+.msg--card .msg__fields { gap: 12px; }
+.msg--card input, .msg--card textarea { height: 56px; padding: 16px 20px; font-size: 16px; border-radius: 16px; }
+.msg--card textarea { height: auto; min-height: clamp(170px, 18vw, 230px); }
+.msg--card .msg__send { --h: 60px; font-size: 14px; padding: 0 28px; }
+@media (max-width: 860px) {
+  .msg--card { flex-basis: 100%; min-width: 0; padding: 22px; }
+  .msg--card textarea { min-height: 150px; }
+}
